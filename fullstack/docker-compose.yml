@@ -1,28 +1,30 @@
 #version: "3.9"
-services:
-  client:
-    container_name: client
-    restart: always
-    build: ./client
+services: # Define the different containers (services) that make up your application
+  client: # The client service, usually the frontend app
+    container_name: client # Name of the container when it runs
+    restart: always # Always restart the container if it stops/crashes
+    build: ./client # Build the Docker image using the Dockerfile in the ./client directory
     ports:
-      - "3000:3000"
+      - "3000:3000" # Map port 3000 on the host to port 3000 in the container (access frontend at localhost:3000)
     links:
-      - app
-  app:
-    container_name: app
-    restart: always
-    build: ./api
+      - app # Link this container to the 'app' container, allowing network communication (legacy feature)
+
+  app: # The app service, usually the backend API
+    container_name: app # Name of the container
+    restart: always # Always restart on failure
+    build: ./api # Build the Docker image using the Dockerfile in the ./api directory
     ports:
-      - "4000:4000"
+      - "4000:4000" # Map port 4000 on the host to port 4000 in the container (access API at localhost:4000)
     depends_on:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo:latest
-    restart: always
+      - mongo # This service depends on the 'mongo' service, so Docker starts 'mongo' first
+
+  mongo: # The mongo service, the database container
+    container_name: mongo # Name of the container
+    image: mongo:latest # Use the official MongoDB image from Docker Hub (latest version)
+    restart: always # Always restart on failure
     expose:
-      - "27017"
+      - "27017" # Expose port 27017 to other containers in the Docker network (not to host)
     volumes:
-      - ./data:/data/db
+      - ./data:/data/db # Mount local ./data directory to /data/db in the container to persist database files
     ports:
-      - "27017:27017"
+      - "27017:27017" # Map port 27017 on the host to 27017 in the container (allow external access)
