@@ -1,6 +1,13 @@
 # Docker is a platform that allows you to package an application and its dependencies into a lightweight, portable container.
 # This container can run consistently across different environments, making it easier to develop, ship, and run applications.
 
+# Summary of the flow
+# Dockerfile  --> (docker build) -->  Image  --> (docker run) -->  Container (running instance) 
+
+# You write a Dockerfile describing how to build your environment.
+# You build an image based on that Dockerfile.
+# You run a container from that image to execute your app.
+
 # Use the official Node.js image from Docker Hub as the base image.  
 FROM node  
 #FROM node:16  
